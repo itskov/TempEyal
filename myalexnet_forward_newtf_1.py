@@ -222,12 +222,12 @@ sess.run(init)
 # Total number of iterations.
 N = 20000;
 # When do we want to perform the gaussian blur.
-t = 20;
+z = 20;
 # When to save an image.
 T = 2000;
 
 # We're adding (t-1) because we want get "far as possible" from the blurring.
-for t in range(N + (t-1)):
+for t in range(N + (z-1)):
     print(str(t) + " iterations.")
 
     xOrig = x.eval(sess)
@@ -278,7 +278,7 @@ for t in range(N + (t-1)):
             sess.run(assOp, feed_dict={xPlaceHolder: xValues})
 
     # We're adding (t-1) because we want get "far as possible" from the blurring.
-    if (t % (T + (t-1)) == 0):
+    if (t % (T + (z-1)) == 0):
         outFile = "InputImage_" + str(t) + ".jpg"
         xImg = x.eval(sess)
         xImg = (xImg - np.min(xImg)) / (np.max(xImg) - np.min(xImg))
