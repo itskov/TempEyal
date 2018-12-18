@@ -220,11 +220,11 @@ sess.run(init)
 
 
 # Total number of iterations.
-N = 50000;
+N = 20000;
 # When do we want to perform the gaussian blur.
 t = 20;
 # When to save an image.
-T = 10000;
+T = 2000;
 
 # We're adding (t-1) because we want get "far as possible" from the blurring.
 for t in range(N + (t-1)):
