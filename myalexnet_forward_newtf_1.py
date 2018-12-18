@@ -211,7 +211,7 @@ minimize = tf.train.AdamOptimizer(learning_rate=0.01).minimize(loss = -(fc8[0][8
 x = tf.Variable(train_x)
 
 xPlaceHolder = tf.placeholder(shape=x.get_shape(), dtype=tf.float32)
-assOp = tf.assign(x, xPlaceHolder)
+assOp = x.assign(xPlaceHolder)
 
 
 init = tf.initialize_all_variables()
@@ -230,7 +230,8 @@ T = 10000;
 for t in range(N + (t-1)):
     print(str(t) + " iterations.")
 
-    xImg = x.eval(sess)
+    xOrig = x.eval(sess)
+    xImg = xOrig
 
     firstChannel = xImg[0, :, :, 0]
     secondChannel = xImg[0, :, :, 1]
@@ -269,7 +270,7 @@ for t in range(N + (t-1)):
         #xValues[ xValues < np.quantile(abs(xValues),0.02) ] = 0
 
         if (t %  20 == 0):
-            xValues = x.eval(session=sess)
+            xValues = xOrig
             xValues[0, :, :, 0] = scipy.ndimage.filters.gaussian_filter(xValues[0, :, :, 0], 3)
             xValues[0, :, :, 1] = scipy.ndimage.filters.gaussian_filter(xValues[0, :, :, 1], 3)
             xValues[0, :, :, 2] = scipy.ndimage.filters.gaussian_filter(xValues[0, :, :, 2], 3)
