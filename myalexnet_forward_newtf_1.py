@@ -207,6 +207,13 @@ prob = tf.nn.softmax(fc8)
 
 minimize = tf.train.AdamOptimizer(learning_rate=0.01).minimize(loss = -(fc8[0][8] - 0.06*tf.norm(x)), var_list=x)
 
+
+x = tf.Variable(train_x)
+
+xPlaceHolder = tf.placeholder(shape=x.get_shape(), dtype=tf.float32)
+assOp = tf.assign(x, xPlaceHolder)
+
+
 init = tf.initialize_all_variables()
 sess = tf.Session()
 sess.run(init)
@@ -249,7 +256,8 @@ for t in range(N + (t-1)):
     xImg[0, :, :, 2] = thirdChannel
 
     assOp = tf.assign(x, xImg)
-    sess.run(assOp)
+    sess.run(assOp, feed_dict={xPlaceHolder: xImg})
+
 
     sess.run(minimize)
 
@@ -266,8 +274,7 @@ for t in range(N + (t-1)):
             xValues[0, :, :, 1] = scipy.ndimage.filters.gaussian_filter(xValues[0, :, :, 1], 3)
             xValues[0, :, :, 2] = scipy.ndimage.filters.gaussian_filter(xValues[0, :, :, 2], 3)
 
-            assOp = tf.assign(x, xValues)
-            sess.run(assOp)
+            sess.run(assOp, feed_dict={xPlaceHolder: xValues})
 
     # We're adding (t-1) because we want get "far as possible" from the blurring.
     if (t % (T + (t-1)) == 0):
